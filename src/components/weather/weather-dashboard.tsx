@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { CitySearch } from "@/components/weather/city-search"
+import { WeatherBackground } from "@/components/weather/weather-background"
 import {
   CurrentCard,
   DailyCard,
@@ -64,6 +65,7 @@ export function WeatherDashboard() {
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-5 sm:px-6 lg:py-8">
+      {weather && <WeatherBackground code={weather.current.weatherCode} isDay={weather.current.isDay} />}
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
