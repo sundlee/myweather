@@ -255,6 +255,40 @@ export function getCondition(code: number, isDay = true) {
   }
 }
 
+export type Scene =
+  | "clear"
+  | "partly-cloudy"
+  | "overcast"
+  | "fog"
+  | "drizzle"
+  | "heavy-rain"
+  | "snow"
+  | "blizzard"
+  | "thunderstorm"
+
+// 배경 영상은 WMO 코드를 눈으로 구분되는 9개 장면으로 묶는다.
+const SCENES: Record<Scene, number[]> = {
+  clear: [0, 1],
+  "partly-cloudy": [2],
+  overcast: [3],
+  fog: [45, 48],
+  drizzle: [51, 53, 55, 56, 57, 61, 80],
+  "heavy-rain": [63, 65, 66, 67, 81, 82],
+  snow: [71, 73, 77, 85],
+  blizzard: [75, 86],
+  thunderstorm: [95, 96, 99],
+}
+
+const SCENE_BY_CODE = new Map(
+  Object.entries(SCENES).flatMap(([scene, codes]) => codes.map((code) => [code, scene as Scene]))
+)
+
+/** public/videos/weather 아래 배경 파일 이름(확장자 제외) */
+export function getBackgroundName(code: number, isDay: boolean) {
+  const scene = SCENE_BY_CODE.get(code) ?? "overcast"
+  return `${scene}-${isDay ? "day" : "night"}`
+}
+
 export function convertTemp(celsius: number, unit: Unit) {
   return unit === "c" ? celsius : (celsius * 9) / 5 + 32
 }
